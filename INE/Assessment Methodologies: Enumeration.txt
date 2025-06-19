@@ -1,0 +1,55 @@
+ip = 192.26.140.3
+
+22/tcp OpenSSH 8.2p1 Ubuntu 4ubuntu0.11
+445/tcp Samba smbd 4.6.2
+5554/tcp vsftpd 2.0.8
+
+smb: users(josh - nancy - bob - alice)
+i do share enum by ready script 
+#!/bin/bash
+
+# Define the target and wordlist location
+TARGET="target.ine.local"
+WORDLIST="/root/Desktop/wordlists/shares.txt"
+
+# Check if the wordlist file exists
+if [ ! -f "$WORDLIST" ]; then
+    echo "Wordlist not found: $WORDLIST"
+    exit 1
+fi
+
+# Loop through each share in the wordlist
+while read -r SHARE; do
+    echo "Testing share: $SHARE"
+    smbclient //$TARGET/$SHARE -N -c "ls" &>/dev/null
+
+    if [ $? -eq 0 ]; then
+        echo "[+] Anonymous access allowed for: $SHARE"
+    else
+        echo "[-] Access denied for: $SHARE"
+    fi
+done < "$WORDLIST"
+
+so i found pubfiles 
+flag1 = FLAG1{edf6d6772050419f8e86b6258336bb90}
+
+
+now smb user enum we already get users from enum4linux so we use msfconsole for this mission
+
+smb_creds = josh:butterfly
+nice
+
+flag to have hint talk about privetshare like username
+and we got flag2 = FLAG2{5cba0f6bde9b4ff3ba1977e2ee3ab0f3}
+
+ftp:
+we got note 
+
+ Reminder to users, specifically ashley, alice and amanda to change their weak passwords immediately!!!
+so one of these users can get us into ftp
+we got creds by hydra alice:pretty
+flag3 = FLAG3{4da1f4ee677a42678863515b2090d133}
+
+last flag the easeits one try login ssh and you will get it
+
+flag4 = FLAG4{246a24cf989d4abbb7acd611a64f62b8
