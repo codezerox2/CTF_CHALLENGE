@@ -12,7 +12,6 @@ User-agent: googlebot
 Disallow: /photos
 
 now we need to know if we target windows or linux by ping
-ip = 192.34.46.3
 its linux server
 
 now we start scan by nmap
