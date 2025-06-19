@@ -70,7 +70,7 @@ mysql-enum:
 |     admin:<empty> - Valid credentials
 |     test:<empty> - Valid credentials
 now we have much users to login
-mysql -h 192.168.1.100 -u root -p
+mysql -h <target ip> -u root -p
 
 yesss we got into sqldate base
 MySQL [(none)]> show databases;
